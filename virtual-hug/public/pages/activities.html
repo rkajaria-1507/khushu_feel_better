@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Long Distance Date Ideas</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/hearts.css">
+  <link rel="stylesheet" href="../css/dates.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <a href="../index.html" class="back-link">&larr; Back</a>
+    <div class="dates-header">
+      <h2>Long Distance Date Ideas 💕</h2>
+      <p class="subtitle">Beautiful moments we can share, no matter the distance</p>
+    </div>
+    
+    <div class="date-categories">
+      <div class="category active" onclick="showCategory('romantic')">
+        <span class="category-icon">🌹</span>
+        <span>Romantic</span>
+      </div>
+      <div class="category" onclick="showCategory('fun')">
+        <span class="category-icon">🎮</span>
+        <span>Fun & Games</span>
+      </div>
+      <div class="category" onclick="showCategory('creative')">
+        <span class="category-icon">🎨</span>
+        <span>Creative</span>
+      </div>
+      <div class="category" onclick="showCategory('cozy')">
+        <span class="category-icon">☕</span>
+        <span>Cozy</span>
+      </div>
+    </div>
+    
+    <div class="date-ideas-container">
+      <!-- Romantic Date Ideas -->
+      <div id="romantic" class="date-ideas-section active">
+        <div class="date-idea">
+          <div class="date-icon">🌙</div>
+          <div class="date-content">
+            <h3>Virtual Stargazing</h3>
+            <p>Use apps like Star Walk or Sky Map while video calling. Share the same constellations and make wishes together under the same sky.</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">🕯️</div>
+          <div class="date-content">
+            <h3>Candlelit Dinner Date</h3>
+            <p>Cook the same meal, light candles, dress up, and have a romantic dinner over video call. Create a restaurant atmosphere at home.</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">🌅</div>
+          <div class="date-content">
+            <h3>Virtual Sunrise/Sunset</h3>
+            <p>Share a sunrise or sunset together through video call. Even if you're in different time zones, you can experience the beauty together.</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">💌</div>
+          <div class="date-content">
+            <h3>Love Letter Exchange</h3>
+            <p>Write handwritten letters and read them to each other over video call, or mail them as a surprise.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Fun & Games Date Ideas -->
+      <div id="fun" class="date-ideas-section">
+        <div class="date-idea">
+          <div class="date-icon">🎬</div>
+          <div class="date-content">
+            <h3>Movie Marathon Night</h3>
+            <p>Use Netflix Party, Discord, or Teleparty to watch movies together. Make popcorn and create your own cinema experience.</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">🎲</div>
+          <div class="date-content">
+            <h3>Online Games Together</h3>
+            <p>Play Words with Friends, online board games, video games, or even simple browser games while video chatting.</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">🎤</div>
+          <div class="date-content">
+            <h3>Virtual Karaoke Night</h3>
+            <p>Use apps like Smule or just sing along to YouTube videos together. Don't worry about being perfect - just have fun!</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">🧩</div>
+          <div class="date-content">
+            <h3>Online Puzzle Challenge</h3>
+            <p>Work on the same online jigsaw puzzle together, or challenge each other to puzzle games and brain teasers.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Creative Date Ideas -->
+      <div id="creative" class="date-ideas-section">
+        <div class="date-idea">
+          <div class="date-icon">🎨</div>
+          <div class="date-content">
+            <h3>Virtual Art Class</h3>
+            <p>Follow the same painting or drawing tutorial on YouTube together. Compare your masterpieces and hang them up!</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">📸</div>
+          <div class="date-content">
+            <h3>Photo Challenge</h3>
+            <p>Give each other daily photo challenges. Share pictures of your day, surroundings, or creative shots based on themes.</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">🎵</div>
+          <div class="date-content">
+            <h3>Playlist Creation</h3>
+            <p>Create playlists for each other on Spotify. Share songs that remind you of each other or your relationship.</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">✍️</div>
+          <div class="date-content">
+            <h3>Story Writing</h3>
+            <p>Write a story together, taking turns with each paragraph. See where your combined creativity takes you!</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Cozy Date Ideas -->
+      <div id="cozy" class="date-ideas-section">
+        <div class="date-idea">
+          <div class="date-icon">☕</div>
+          <div class="date-content">
+            <h3>Coffee/Tea Date</h3>
+            <p>Make your favorite warm drinks and just chat about your day, dreams, and random thoughts. Simple but intimate.</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">📚</div>
+          <div class="date-content">
+            <h3>Book Club for Two</h3>
+            <p>Read the same book and discuss chapters together. Share favorite quotes and your thoughts about the story.</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">🍳</div>
+          <div class="date-content">
+            <h3>Cooking Together</h3>
+            <p>Follow the same recipe and cook together over video call. Help each other and enjoy the meal "together".</p>
+          </div>
+        </div>
+        
+        <div class="date-idea">
+          <div class="date-icon">🛁</div>
+          <div class="date-content">
+            <h3>Spa Night</h3>
+            <p>Do face masks, take relaxing baths, or practice meditation together. Create a peaceful, pampering atmosphere.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../js/hearts.js"></script>
+  <script src="../js/dates.js"></script>
+</body>
+</html>

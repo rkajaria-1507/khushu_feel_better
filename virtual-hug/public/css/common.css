@@ -1,0 +1,86 @@
+/* common.css */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to bottom right, #ffe6e6, #fff0f5);
+  color: #660033;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  transition: all 0.5s ease;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #99004d;
+}
+.links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Handle the 5th item spanning both columns */
+.links .card:nth-child(5) {
+  grid-column: 1 / -1;
+  max-width: 400px;
+  justify-self: center;
+}
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #fff5f7;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #660033;
+  font-size: 1.2em;
+  box-shadow: 0 2px 5px rgba(255, 0, 128, 0.2);
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: scale(1.05);
+}
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #660033;
+  text-decoration: none;
+  font-weight: 500;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  background: #fff;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.hug-container {
+  text-align: center;
+}
+.heart {
+  font-size: 5em;
+  animation: float 2s ease-in-out infinite;
+  color: #e60073;
+}
+.subtitle {
+  text-align: center;
+  font-size: 1.2em;
+  color: #993366;
+  margin-bottom: 20px;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}

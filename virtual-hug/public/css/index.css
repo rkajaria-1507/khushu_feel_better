@@ -1,0 +1,24 @@
+/* index.css - Romantic Home Styles */
+.links .card {
+  border: 2px solid #ff99cc;
+  background: linear-gradient(to bottom right, #fff0f5, #ffe6e6);
+}
+h1 {
+  font-size: 2.5em;
+  font-weight: 600;
+}
+.card {
+  transition: background 0.3s;
+}
+.card:hover {
+  background: #ffccdd;
+}
+.subtitle {
+  font-style: italic;
+}
+.container h1::after {
+  content: " Your daily dose of love";
+  display: block;
+  font-size: 0.6em;
+  color: #cc0066;
+}

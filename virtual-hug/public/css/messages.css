@@ -1,0 +1,169 @@
+/* messages.css - Romantic Messages Styles */
+.messages-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.messages-list li {
+  position: relative;
+  padding-left: 40px;
+  margin: 10px 0;
+  font-style: italic;
+  color: #800040;
+}
+
+.messages-list li:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background-image: url('envelope-icon.png');
+  background-size: cover;
+}
+
+.messages-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.envelope {
+  position: relative;
+  width: 250px;
+  height: 150px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.envelope:hover {
+  transform: scale(1.05);
+}
+
+.envelope-front {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.envelope-body {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(135deg, #ff4757, #ff6b6b);
+  clip-path: polygon(0 0, 100% 0, 50% 90%);
+  border-radius: 8px 8px 0 0;
+  z-index: 2;
+  transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-origin: top center;
+}
+
+.envelope.opened .envelope-flap {
+  transform: rotateX(180deg);
+}
+
+.envelope-caption {
+  color: white;
+  font-weight: 500;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Fullscreen letter overlay */
+.letter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.letter-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.letter-fullscreen {
+  background: #fff;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  border-radius: 15px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transform: scale(0.7) translateY(50px);
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  overflow: hidden;
+}
+
+.letter-overlay.visible .letter-fullscreen {
+  transform: scale(1) translateY(0);
+}
+
+.letter-content {
+  padding: 40px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.letter-content p {
+  color: #333;
+  line-height: 1.8;
+  font-size: 18px;
+  margin: 0;
+  font-style: italic;
+  text-align: center;
+}
+
+.close-letter {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s;
+  font-weight: bold;
+}
+
+.close-letter:hover {
+  background: #ff4757;
+  transform: scale(1.1);
+}
+
+.subtitle {
+  font-family: 'Poppins', sans-serif;
+}

@@ -1,0 +1,27 @@
+{
+  "name": "virtual-care-package",
+  "version": "1.0.0",
+  "description": "A romantic virtual care package for long-distance relationships 💕",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo 'No build step required'"
+  },
+  "keywords": [
+    "love",
+    "relationship",
+    "long-distance",
+    "virtual",
+    "care-package",
+    "romantic"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

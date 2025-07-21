@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Journey - Relationship Tools</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/hearts.css">
+  <link rel="stylesheet" href="../css/relationship-tools.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <a href="../index.html" class="back-link">&larr; Back</a>
+    <div class="tools-header">
+      <h2>Our Journey Together 💖</h2>
+      <p class="subtitle">Track our love story, milestones, and beautiful moments</p>
+    </div>
+    
+    <div class="tools-grid">
+      <!-- Countdown Timer Section -->
+      <div class="tool-section countdown-section">
+        <div class="tool-header">
+          <span class="tool-icon">⏰</span>
+          <h3>Countdown to Our Next Meeting</h3>
+        </div>
+        <div class="countdown-container">
+          <div class="countdown-display" id="countdown-display">
+            <div class="time-unit">
+              <span class="time-value" id="days">0</span>
+              <span class="time-label">Days</span>
+            </div>
+            <div class="time-unit">
+              <span class="time-value" id="hours">0</span>
+              <span class="time-label">Hours</span>
+            </div>
+            <div class="time-unit">
+              <span class="time-value" id="minutes">0</span>
+              <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-unit">
+              <span class="time-value" id="seconds">0</span>
+              <span class="time-label">Seconds</span>
+            </div>
+          </div>
+          <div class="countdown-controls">
+            <input type="datetime-local" id="target-date" class="date-input">
+            <button onclick="setCountdown()" class="set-btn">Set Date 💕</button>
+          </div>
+          <div class="countdown-message" id="countdown-message">
+            Set a date to start counting down to our next beautiful moment together! ✨
+          </div>
+        </div>
+      </div>
+
+      <!-- Anniversary Counter -->
+      <div class="tool-section anniversary-section">
+        <div class="tool-header">
+          <span class="tool-icon">💝</span>
+          <h3>Our Love Timeline</h3>
+        </div>
+        <div class="anniversary-container">
+          <div class="anniversary-display" id="anniversary-display">
+            <div class="anniversary-stat">
+              <span class="stat-number" id="relationship-days">0</span>
+              <span class="stat-label">Days Together</span>
+            </div>
+            <div class="anniversary-stat">
+              <span class="stat-number" id="relationship-months">0</span>
+              <span class="stat-label">Months</span>
+            </div>
+            <div class="anniversary-stat">
+              <span class="stat-number" id="relationship-years">0</span>
+              <span class="stat-label">Years</span>
+            </div>
+          </div>
+          <div class="anniversary-controls">
+            <input type="date" id="relationship-start" class="date-input">
+            <button onclick="setAnniversary()" class="set-btn">Set Our Start Date 💫</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Mood Tracker -->
+      <div class="tool-section mood-section">
+        <div class="tool-header">
+          <span class="tool-icon">😊</span>
+          <h3>Today's Mood</h3>
+        </div>
+        <div class="mood-container">
+          <div class="mood-question">How are you feeling about us today?</div>
+          <div class="mood-options">
+            <div class="mood-option" data-mood="amazing" onclick="selectMood('amazing')">
+              <span class="mood-emoji">🥰</span>
+              <span class="mood-label">Amazing</span>
+            </div>
+            <div class="mood-option" data-mood="happy" onclick="selectMood('happy')">
+              <span class="mood-emoji">😊</span>
+              <span class="mood-label">Happy</span>
+            </div>
+            <div class="mood-option" data-mood="loving" onclick="selectMood('loving')">
+              <span class="mood-emoji">💕</span>
+              <span class="mood-label">In Love</span>
+            </div>
+            <div class="mood-option" data-mood="missing" onclick="selectMood('missing')">
+              <span class="mood-emoji">🥺</span>
+              <span class="mood-label">Missing You</span>
+            </div>
+            <div class="mood-option" data-mood="excited" onclick="selectMood('excited')">
+              <span class="mood-emoji">🤩</span>
+              <span class="mood-label">Excited</span>
+            </div>
+            <div class="mood-option" data-mood="grateful" onclick="selectMood('grateful')">
+              <span class="mood-emoji">🙏</span>
+              <span class="mood-label">Grateful</span>
+            </div>
+          </div>
+          <div class="mood-history" id="mood-history">
+            <h4>Recent Moods</h4>
+            <div class="mood-timeline" id="mood-timeline">
+              <!-- Mood history will be populated here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Relationship Goals -->
+      <div class="tool-section goals-section">
+        <div class="tool-header">
+          <span class="tool-icon">🎯</span>
+          <h3>Our Goals Together</h3>
+        </div>
+        <div class="goals-container">
+          <div class="add-goal">
+            <input type="text" id="new-goal" placeholder="Add a new goal for us..." class="goal-input">
+            <button onclick="addGoal()" class="add-btn">Add Goal ✨</button>
+          </div>
+          <div class="goals-list" id="goals-list">
+            <!-- Goals will be populated here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Milestones -->
+      <div class="tool-section milestones-section">
+        <div class="tool-header">
+          <span class="tool-icon">🏆</span>
+          <h3>Our Milestones</h3>
+        </div>
+        <div class="milestones-container">
+          <div class="add-milestone">
+            <input type="text" id="new-milestone" placeholder="Add a milestone we achieved..." class="milestone-input">
+            <input type="date" id="milestone-date" class="date-input">
+            <button onclick="addMilestone()" class="add-btn">Add Milestone 🎉</button>
+          </div>
+          <div class="milestones-list" id="milestones-list">
+            <!-- Milestones will be populated here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Love Statistics -->
+      <div class="tool-section stats-section">
+        <div class="tool-header">
+          <span class="tool-icon">📊</span>
+          <h3>Love Statistics</h3>
+        </div>
+        <div class="stats-container">
+          <div class="stat-card">
+            <span class="stat-icon">💌</span>
+            <div class="stat-content">
+              <span class="stat-number" id="messages-sent">0</span>
+              <span class="stat-label">Messages Exchanged</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">🤗</span>
+            <div class="stat-content">
+              <span class="stat-number" id="hugs-given">0</span>
+              <span class="stat-label">Virtual Hugs</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">📸</span>
+            <div class="stat-content">
+              <span class="stat-number" id="memories-shared">0</span>
+              <span class="stat-label">Memories Shared</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">💝</span>
+            <div class="stat-content">
+              <span class="stat-number" id="encouragements-shared">0</span>
+              <span class="stat-label">Encouragements</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="../js/hearts.js"></script>
+  <script src="../js/relationship-tools.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Care Package</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/hearts.css">
+  <link rel="stylesheet" href="css/flowers.css">
+  <link rel="stylesheet" href="css/encouragement.css">
+  <link rel="stylesheet" href="css/carousel.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Virtual Care Package 💖</h1>
+    <div class="links">
+      <a href="pages/hug.html" class="card">Virtual Hug 🤗</a>
+      <a href="pages/messages.html" class="card">Love Messages 💌</a>
+      <div class="card encouragement-btn" onclick="showDailyEncouragement()">Daily Encouragement 🌟</div>
+      <a href="pages/activities.html" class="card">Date Ideas 💕</a>
+      <a href="pages/relationship-tools.html" class="card">Our Journey 💖</a>
+    </div>
+    
+    <!-- Favourite Moments Carousel -->
+    <div class="carousel-section">
+      <h2 class="carousel-title">Our Favourite Moments 💫</h2>
+      <div class="carousel-container">
+        <button class="carousel-btn carousel-btn-prev" onclick="prevSlide()">‹</button>
+        <div class="carousel-wrapper">
+          <div class="carousel-track" id="carousel-track">
+            <!-- Media items will be loaded dynamically -->
+            <div class="carousel-item placeholder-item">
+              <div class="placeholder-content">
+                <span class="placeholder-icon">📷</span>
+                <p>Add your favourite moments to<br><code>images/carousel/</code></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-btn carousel-btn-next" onclick="nextSlide()">›</button>
+      </div>
+      <div class="carousel-dots" id="carousel-dots"></div>
+    </div>
+  </div>
+  
+  <!-- Daily Encouragement Overlay (outside container so it doesn't fade) -->
+  <div id="encouragement-overlay" class="encouragement-overlay hidden">
+    <div class="encouragement-content">
+      <div id="encouragement-message" class="encouragement-message"></div>
+      <button class="close-btn" onclick="closeDailyEncouragement()">× Close</button>
+      <button class="new-message-btn" onclick="showNewMessage()">New Message ✨</button>
+    </div>
+  </div>
+  
+  <!-- Flowers container (hidden by default, shown during encouragement) -->
+  <div class="flowers-container"></div>
+  
+  <script src="js/index.js"></script>
+  <script src="js/hearts.js"></script>
+  <script src="js/encouragement.js"></script>
+  <script src="js/carousel.js"></script>
+</body>
+</html>
