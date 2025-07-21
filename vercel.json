@@ -21,11 +21,6 @@
       "dest": "/virtual-hug/server.js"
     }
   ],
-  "functions": {
-    "virtual-hug/server.js": {
-      "maxDuration": 30
-    }
-  },
   "installCommand": "cd virtual-hug && npm install",
   "buildCommand": "cd virtual-hug && npm run build"
 }
