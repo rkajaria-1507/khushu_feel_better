@@ -18,10 +18,5 @@
     }
   ],
   "installCommand": "cd virtual-hug && npm install",
-  "buildCommand": "cd virtual-hug && npm run build",
-  "functions": {
-    "virtual-hug/server.js": {
-      "maxDuration": 30
-    }
-  }
+  "buildCommand": "cd virtual-hug && npm run build"
 }
