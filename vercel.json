@@ -10,17 +10,18 @@
   "routes": [
     {
       "src": "/health",
-      "dest": "/virtual-hug/server.js"
-    },
-    {
-      "src": "/(.*\\.(css|js|png|jpg|jpeg|gif|ico|svg|mp4|webm|mov|html))",
-      "dest": "/virtual-hug/public/$1"
+      "dest": "virtual-hug/server.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/virtual-hug/server.js"
+      "dest": "virtual-hug/server.js"
     }
   ],
   "installCommand": "cd virtual-hug && npm install",
-  "buildCommand": "cd virtual-hug && npm run build"
+  "buildCommand": "cd virtual-hug && npm run build",
+  "functions": {
+    "virtual-hug/server.js": {
+      "maxDuration": 30
+    }
+  }
 }

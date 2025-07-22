@@ -83,6 +83,10 @@ The Virtual Care Package is a heartwarming web application that helps couples ma
 4. **Open your browser**
    Navigate to `http://localhost:3000` to view the application
 
+## 🌐 Live Demo
+
+The application is currently deployed and accessible at: **https://khushujain.vercel.app**
+
 ## 📁 Project Structure
 
 ```
