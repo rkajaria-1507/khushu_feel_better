@@ -22,138 +22,31 @@ class FavouriteCarousel {
   
   async loadMediaFiles() {
     this.isLoading = true;
-    
     try {
-      // Try to get directory listing from the server
-      // First, let's try a common approach - attempt to fetch a directory index
-      const existingFiles = [];
-      
-      // Try to fetch the directory listing (this would work if server supports it)
-      try {
-        const response = await fetch('images/carousel/');
-        if (response.ok) {
-          const text = await response.text();
-          // Parse HTML directory listing if available
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(text, 'text/html');
-          const links = doc.querySelectorAll('a[href]');
-          
-          for (const link of links) {
-            const href = link.getAttribute('href');
-            if (href && href !== '../' && !href.startsWith('/') && !href.startsWith('http')) {
-              const filename = href.replace(/\/$/, ''); // Remove trailing slash
-              const fileType = this.getFileType(filename);
-              if (fileType === 'image' || fileType === 'video') {
-                existingFiles.push({
-                  name: filename,
-                  path: `images/carousel/${filename}`,
-                  type: fileType
-                });
-              }
-            }
-          }
-        }
-      } catch (error) {
-        // Directory listing not supported, fall back to trying common extensions
+      // Fetch the list of files from the server API
+      const response = await fetch('/api/carousel-files');
+      let files = [];
+      if (response.ok) {
+        files = await response.json();
       }
-      
-      // If directory listing didn't work, use a different approach
-      // We'll create a more comprehensive but smarter scanning system
-      if (existingFiles.length === 0) {
-        // Generate possible filenames based on common patterns but limit the search
-        const extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'webm', 'mov'];
-        const testFiles = new Set();
-        
-        // Add very common single names
-        const commonNames = ['photo', 'image', 'pic', 'img', 'picture', 'moment', 'memory', 'us', 'together', 'love', 'video', 'clip', 'movie'];
-        for (const name of commonNames) {
-          for (const ext of extensions) {
-            testFiles.add(`${name}.${ext}`);
-          }
-        }
-        
-        // Add numbered variations (but limit to reasonable numbers)
-        const prefixes = ['img', 'image', 'photo', 'pic', 'moment', 'memory', 'video', 'clip'];
-        for (const prefix of prefixes) {
-          for (let i = 1; i <= 20; i++) { // Reduced from 50 to 20
-            for (const ext of extensions) {
-              testFiles.add(`${prefix}${i}.${ext}`);
-              if (i <= 10) { // Only add underscore/dash versions for first 10
-                testFiles.add(`${prefix}_${i}.${ext}`);
-                testFiles.add(`${prefix}-${i}.${ext}`);
-              }
-            }
-          }
-        }
-        
-        // Test files in batches to avoid overwhelming the server
-        const fileArray = Array.from(testFiles);
-        const batchSize = 5; // Smaller batch size
-        
-        for (let i = 0; i < fileArray.length; i += batchSize) {
-          const batch = fileArray.slice(i, i + batchSize);
-          
-          const promises = batch.map(async (filename) => {
-            try {
-              const controller = new AbortController();
-              const timeoutId = setTimeout(() => controller.abort(), 1000); // 1 second timeout
-              
-              const response = await fetch(`images/carousel/${filename}`, { 
-                method: 'HEAD',
-                signal: controller.signal
-              });
-              
-              clearTimeout(timeoutId);
-              
-              if (response.ok) {
-                return {
-                  name: filename,
-                  path: `images/carousel/${filename}`,
-                  type: this.getFileType(filename)
-                };
-              }
-            } catch (error) {
-              // File doesn't exist or timeout
-            }
-            return null;
-          });
-          
-          const results = await Promise.all(promises);
-          const validFiles = results.filter(file => file !== null);
-          existingFiles.push(...validFiles);
-          
-          // If we found some files, we can break early to speed up loading
-          if (existingFiles.length >= 10) break; // Stop after finding 10 files
-        }
+      // Build mediaItems array
+      const allowedExt = ['jpg', 'jpeg', 'png', 'mp4'];
+      this.mediaItems = files.map(filename => {
+        const ext = filename.split('.').pop().toLowerCase();
+        const type = (['mp4', 'webm', 'mov'].includes(ext)) ? 'video' : 'image';
+        return {
+          name: filename,
+          path: `images/carousel/${filename}`,
+          type
+        };
+      });
+      // If no files, show a single placeholder
+      if (this.mediaItems.length === 0) {
+        this.mediaItems = [{ name: 'placeholder', path: null, type: 'placeholder' }];
       }
-      
-      // Sort files by name for consistent ordering
-      existingFiles.sort((a, b) => a.name.localeCompare(b.name));
-      
-      // Set the media items - either the found files or a single placeholder
-      if (existingFiles.length > 0) {
-        this.mediaItems = existingFiles;
-        console.log(`Found ${existingFiles.length} media files:`, existingFiles.map(f => f.name));
-      } else {
-        // Only ONE placeholder when no files are found
-        this.mediaItems = [{
-          name: 'placeholder',
-          path: null,
-          type: 'placeholder'
-        }];
-        console.log('No media files found, showing placeholder');
-      }
-      
     } catch (error) {
-      console.log('Error loading media files, using single placeholder');
-      // Only ONE placeholder on error
-      this.mediaItems = [{
-        name: 'placeholder',
-        path: null,
-        type: 'placeholder'
-      }];
+      this.mediaItems = [{ name: 'placeholder', path: null, type: 'placeholder' }];
     }
-    
     this.isLoading = false;
     this.renderCarousel();
   }
@@ -424,17 +317,6 @@ class FavouriteCarousel {
         this.nextSlide();
       }
     });
-    
-    // Auto-refresh to check for new files periodically
-    setInterval(() => {
-      this.loadMediaFiles();
-    }, 10000); // Check every 10 seconds instead of 30
-    
-    // Add manual reload function for testing
-    window.reloadCarousel = () => {
-      console.log('Manually reloading carousel...');
-      this.loadMediaFiles();
-    };
   }
   
   handleSwipe() {
@@ -471,32 +353,3 @@ function prevSlide() {
 document.addEventListener('DOMContentLoaded', () => {
   window.carousel = new FavouriteCarousel();
 });
-
-// Auto-play functionality (optional)
-function startAutoplay(interval = 5000) {
-  if (window.carouselAutoplay) {
-    clearInterval(window.carouselAutoplay);
-  }
-  
-  window.carouselAutoplay = setInterval(() => {
-    if (window.carousel && window.carousel.mediaItems.length > 1) {
-      // Only auto-advance if not a video or if video is not playing
-      const currentVideo = document.querySelector(`#carousel-track .carousel-item:nth-child(${window.carousel.currentIndex + 1}) video`);
-      if (!currentVideo || currentVideo.paused) {
-        window.carousel.nextSlide();
-      }
-    }
-  }, interval);
-}
-
-// Stop auto-play when user interacts
-function stopAutoplay() {
-  if (window.carouselAutoplay) {
-    clearInterval(window.carouselAutoplay);
-  }
-}
-
-// Start autoplay after page loads (optional - can be enabled)
-// document.addEventListener('DOMContentLoaded', () => {
-//   setTimeout(() => startAutoplay(7000), 3000); // Start after 3 seconds, change every 7 seconds
-// });

@@ -5,28 +5,44 @@ console.log('Love Messages page loaded');
 const envelopes = [
   { id: 1, 
     caption: "When you're feeling happy", 
-    message: "Your joy is contagious! Keep spreading that beautiful smile and lighting up the world around you. ✨" 
+    message: `
+              Hi baby,<br>
+              I am always so happy to see you happy.
+                            
+            `
   },
   { id: 2, 
     caption: "When you're feeling sad", 
-    message: "It's okay to feel this way. You are stronger than you know, and this feeling will pass. You are loved unconditionally. 💕" 
+    message: ``
   },
   { id: 3, 
-    caption: "When you're feeling mad", 
-    message: "Take a deep breath. Your feelings are valid, but remember that you have the power to choose how you respond. You've got this! 💪" 
+    caption: "When you're mad at me", 
+    message: `
+              Hi, what dumb thing did I do this time? <br>
+              Is it because I forgot something you said? Or is it about the fact that I am not serious?
+              Or is it about the other 4534523235 things I just annoy you with? <br>
+              Firstly, I am sorry. If you think I will make some excuse, then you are wrong. I am just an idiot. <br>
+              I hope that it is not something too serious and it is something stupid so that I can annoy you more. 
+              But if it is, I want you to know that I dont mean it. Yeah I have said it maybe only a 1000 times. 
+              And every time I say its going to be different, but it never is. Yes, I understand that you are frustrated,
+              I understand that you are probably on the verge of giving up. Thank you for not doing that.
+              I know that I am not the best person in the world, but I am trying to be better.
+              I am trying to be the person you deserve. I am trying to be the person you can be proud of. <br>
+              Right now with everything happening around me, around us, around you, 
+            `
   },
   { id: 4, 
     caption: "When you need courage", 
-    message: "You are braver than you believe, stronger than you seem, and more loved than you imagine. Go conquer your fears! 🦋" 
+    message: ``
   },
   { id: 5, 
     caption: "When you're feeling lost", 
-    message: "Every path leads somewhere beautiful. Trust the journey, trust yourself, and know that you're exactly where you need to be. 🌟" 
-},
+    message: ``
+  },
   { id: 6, 
     caption: "When you need motivation", 
-    message: "You have within you right now, everything you need to deal with whatever the world can throw at you. Believe in yourself! 🔥" 
-  }
+    message: ``
+  },
 ];
 
 // Track current open envelope

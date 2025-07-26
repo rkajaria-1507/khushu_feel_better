@@ -10,17 +10,31 @@
   <link rel="stylesheet" href="css/flowers.css">
   <link rel="stylesheet" href="css/encouragement.css">
   <link rel="stylesheet" href="css/carousel.css">
+  <link rel="stylesheet" href="css/loading.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <h1>Virtual Care Package 💖</h1>
+
+    <!-- Music Controls -->
+    <div class="theme-music-bar">
+      <audio id="bg-music" src="audio/love-song.mp3" loop></audio>
+      <button class="music-btn" onclick="toggleMusic()">Play Music 🎵</button>
+    </div>
+
+    <!-- Love Timeline Box -->
+    <div class="love-timeline">
+      <h2>Our Love Timeline 💞</h2>
+      <div class="love-timer" id="love-timer">Loading...</div>
+    </div>
+
     <div class="links">
       <a href="pages/hug.html" class="card">Virtual Hug 🤗</a>
       <a href="pages/messages.html" class="card">Love Messages 💌</a>
-      <div class="card encouragement-btn" onclick="showDailyEncouragement()">Daily Encouragement 🌟</div>
-      <a href="pages/activities.html" class="card">Date Ideas 💕</a>
-      <a href="pages/relationship-tools.html" class="card">Our Journey 💖</a>
+      <div class="card encouragement-btn" onclick="showDailyEncouragement()">Motivation 🌟</div>
+      <!-- <a href="pages/activities.html" class="card">Date Ideas 💕</a> -->
+      <a href="pages/flowers.html" class="card">Flowers for you 🌸</a>
     </div>
     
     <!-- Favourite Moments Carousel -->

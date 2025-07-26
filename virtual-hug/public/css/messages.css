@@ -14,7 +14,7 @@
 
 .messages-list li:before {
   content: '';
-  position: absolute;
+  position: relative;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
@@ -27,12 +27,13 @@
 .messages-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  justify-items: center;
   gap: 20px;
   margin-top: 20px;
 }
 
 .envelope {
-  position: relative;
+  position: center;
   width: 250px;
   height: 150px;
   cursor: pointer;
@@ -129,6 +130,7 @@
   max-height: 80vh;
   overflow-y: auto;
   position: relative;
+  ;
 }
 
 .letter-content p {
@@ -137,7 +139,7 @@
   font-size: 18px;
   margin: 0;
   font-style: italic;
-  text-align: center;
+  text-align: left;
 }
 
 .close-letter {
@@ -166,4 +168,44 @@
 
 .subtitle {
   font-family: 'Poppins', sans-serif;
+}
+
+@media (max-width: 400px) {
+  .messages-container {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .envelope {
+    width: 90vw;
+    height: 120px;
+  }
+  .letter-fullscreen {
+    width: 98vw;
+    max-width: 98vw;
+    padding: 10px;
+  }
+  .letter-content {
+    padding: 15px;
+    font-size: 16px;
+    text-align: left;
+  }
+  .letter-content p {
+    text-align: center;
+    font-size: 16px;
+  }
+  .messages-list li {
+    padding-left: 20px;
+    font-size: 1em;
+    text-align: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .envelope {
+    height: 80px;
+  }
+  .letter-content {
+    padding: 8px;
+    font-size: 14px;
+  }
 }
