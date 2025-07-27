@@ -1,8 +1,0 @@
-{
-  "name": "khushu-feel-better-root",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Root package.json for Virtual Care Package. All dependencies are in virtual-hug/.",
-  "author": "Your Name",
-  "license": "MIT"
-}
