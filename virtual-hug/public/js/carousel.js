@@ -1,355 +1,132 @@
-// carousel.js - Interactive photo and video carousel for favourite moments
+// continuous-carousel.js - Rewritten for smooth perpetual scrolling
+// Features:
+// 1. Continuous slow scroll (loop)
+// 2. Pauses when: (a) user presses & holds on an image (pointerdown) (b) a video is playing / expanded
+// 3. Video click toggles play/pause + expanded mode inside the carousel frame
+// 4. Seamless loop by recycling first element to end
+// 5. Graceful with mixed images/videos; placeholder when empty
 
-class FavouriteCarousel {
-  constructor() {
-    this.currentIndex = 0;
-    this.actualIndex = 0; // Position in DOM (for infinite scrolling)
-    this.mediaItems = [];
-    this.track = document.getElementById('carousel-track');
-    this.dotsContainer = document.getElementById('carousel-dots');
-    this.isLoading = false;
-    this.touchStartX = 0;
-    this.touchEndX = 0;
-    
-    this.init();
+(function(){
+  const API_ENDPOINT = '/api/carousel-files';
+  const track = document.getElementById('carousel-track');
+  if(!track) return;
+  const container = track.parentElement; // .carousel-wrapper
+
+  const SPEED_PX_PER_SEC = 18; // adjust for slower/faster glide
+  let offset = 0;
+  let lastTs = null;
+  let isPaused = false;
+  let mediaReady = false;
+
+  function setPaused(p){
+    isPaused = p;
   }
-  
-  async init() {
-    await this.loadMediaFiles();
-    this.setupEventListeners();
-    this.updateCarousel();
-  }
-  
-  async loadMediaFiles() {
-    this.isLoading = true;
+
+  async function loadMedia(){
+    let files = [];
     try {
-      // Fetch the list of files from the server API
-      const response = await fetch('/api/carousel-files');
-      let files = [];
-      if (response.ok) {
-        files = await response.json();
-      }
-      // Build mediaItems array
-      const allowedExt = ['jpg', 'jpeg', 'png', 'mp4'];
-      this.mediaItems = files.map(filename => {
-        const ext = filename.split('.').pop().toLowerCase();
-        const type = (['mp4', 'webm', 'mov'].includes(ext)) ? 'video' : 'image';
-        return {
-          name: filename,
-          path: `images/carousel/${filename}`,
-          type
-        };
-      });
-      // If no files, show a single placeholder
-      if (this.mediaItems.length === 0) {
-        this.mediaItems = [{ name: 'placeholder', path: null, type: 'placeholder' }];
-      }
-    } catch (error) {
-      this.mediaItems = [{ name: 'placeholder', path: null, type: 'placeholder' }];
+      const resp = await fetch(API_ENDPOINT);
+      if(resp.ok){ files = await resp.json(); }
+    } catch(e) { /* ignore */ }
+
+    const allowedExt = ['jpg','jpeg','png','gif','webp','mp4'];
+    files = files.filter(f=> allowedExt.includes(f.split('.').pop().toLowerCase()));
+
+    if(files.length === 0){
+      const placeholder = document.createElement('div');
+      placeholder.className = 'carousel-item placeholder-item';
+      placeholder.innerHTML = `<div class="placeholder-content"><span class="placeholder-icon">📷</span><p>Add your favourite moments to<br><code>images/carousel/</code></p></div>`;
+      track.appendChild(placeholder);
+      mediaReady = true;
+      return;
     }
-    this.isLoading = false;
-    this.renderCarousel();
+
+    files.forEach((name, idx)=>{
+      const ext = name.split('.').pop().toLowerCase();
+      const type = ['mp4','webm','mov'].includes(ext) ? 'video' : 'image';
+      const item = document.createElement('div');
+      item.className = 'carousel-item';
+      if(type==='image'){
+        const img = document.createElement('img');
+        img.src = `images/carousel/${name}`;
+        img.alt = `Favourite moment ${idx+1}`;
+        enableImageHoldPause(img);
+        item.appendChild(img);
+      } else {
+        const video = document.createElement('video');
+        video.src = `images/carousel/${name}`;
+        video.preload = 'metadata';
+        video.controls = true;
+        video.playsInline = true;
+        enableVideoPause(video, item);
+        item.appendChild(video);
+      }
+      track.appendChild(item);
+    });
+
+    // Duplicate items until we have at least 2 * container width for smooth looping
+    duplicateUntilWide();
+    mediaReady = true;
   }
-  
-  getFileType(filename) {
-    const extension = filename.split('.').pop().toLowerCase();
-    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(extension)) {
-      return 'image';
-    } else if (['mp4', 'webm', 'ogg', 'avi', 'mov'].includes(extension)) {
-      return 'video';
-    }
-    return 'unknown';
-  }
-  
-  renderCarousel() {
-    // Clear existing content
-    this.track.innerHTML = '';
-    this.dotsContainer.innerHTML = '';
-    
-    // Only create infinite loop if we have multiple real media files
-    const shouldCreateInfiniteLoop = this.mediaItems.length > 1 && this.mediaItems[0].type !== 'placeholder';
-    
-    if (shouldCreateInfiniteLoop) {
-      // Create clones for infinite scrolling
-      // Add last item at the beginning
-      this.createCarouselItem(this.mediaItems[this.mediaItems.length - 1], -1, true);
-      
-      // Add all original items
-      this.mediaItems.forEach((item, index) => {
-        this.createCarouselItem(item, index, false);
-        this.createDot(index);
+
+  function duplicateUntilWide(){
+    if(!container) return;
+    const minWidth = container.clientWidth * 2;
+    while(track.scrollWidth < minWidth){
+      const clones = Array.from(track.children).map(node=> node.cloneNode(true));
+      clones.forEach(cl=>{
+        // Re-wire event handlers for clones
+        const img = cl.querySelector('img');
+        if(img) enableImageHoldPause(img);
+        const vid = cl.querySelector('video');
+        if(vid){ enableVideoPause(vid, cl); }
+        track.appendChild(cl);
       });
-      
-      // Add first item at the end
-      this.createCarouselItem(this.mediaItems[0], this.mediaItems.length, true);
-      
-      // Start at position 1 (first real item, after the clone)
-      this.currentIndex = 0;
-      this.actualIndex = 1; // Position in DOM (accounting for clone)
-      
-    } else {
-      // Single item or placeholder - no infinite scrolling needed
-      this.mediaItems.forEach((item, index) => {
-        this.createCarouselItem(item, index, false);
-        // Only create dot if it's not a placeholder
-        if (item.type !== 'placeholder') {
-          this.createDot(index);
+    }
+  }
+
+  function enableImageHoldPause(img){
+    let holding = false;
+    img.addEventListener('pointerdown', ()=>{ holding = true; setPaused(true); });
+    ['pointerup','pointerleave','pointercancel'].forEach(ev=> img.addEventListener(ev, ()=>{
+      if(holding){ holding = false; setPaused(false); }
+    }));
+  }
+
+  function enableVideoPause(video, item){
+    video.addEventListener('play', ()=>{ 
+      setPaused(true); 
+      item.classList.add('expanded');
+      // Ensure current video is fully visible
+      try { item.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'}); } catch(e) {}
+    });
+    video.addEventListener('pause', ()=>{ setPaused(false); item.classList.remove('expanded'); });
+    video.addEventListener('ended', ()=>{ setPaused(false); item.classList.remove('expanded'); });
+  }
+
+  function step(ts){
+    if(!mediaReady){ requestAnimationFrame(step); return; }
+    if(lastTs == null) lastTs = ts;
+    const dt = (ts - lastTs)/1000; // seconds
+    lastTs = ts;
+
+    if(!isPaused && track.children.length > 0){
+      offset -= SPEED_PX_PER_SEC * dt;
+      const first = track.children[0];
+      if(first){
+        const firstW = first.getBoundingClientRect().width;
+        if(-offset >= firstW){
+          // Move first to end and adjust offset
+            track.appendChild(first);
+            offset += firstW;
         }
-      });
-      this.actualIndex = 0;
-      this.currentIndex = 0;
+      }
+      track.style.transform = `translateX(${offset}px)`;
     }
-    
-    this.updateCarousel(false); // Don't animate on initial render
-    this.updateNavigationVisibility();
+    requestAnimationFrame(step);
   }
-  
-  createCarouselItem(item, index, isClone = false) {
-    const carouselItem = document.createElement('div');
-    carouselItem.className = 'carousel-item';
-    if (isClone) carouselItem.className += ' clone';
-    
-    if (item.type === 'placeholder') {
-      carouselItem.className += ' placeholder-item';
-      carouselItem.innerHTML = `
-        <div class="placeholder-content">
-          <span class="placeholder-icon">📷</span>
-          <p>Add your favourite moments to<br><code>images/carousel/</code></p>
-          <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
-            Supported: JPG, PNG, MP4<br>
-            Try: moment1.jpg, photo1.png, video1.mp4
-          </p>
-        </div>
-      `;
-    } else if (item.type === 'image') {
-      const img = document.createElement('img');
-      img.src = item.path;
-      img.alt = `Favourite moment ${index + 1}`;
-      img.loading = 'lazy';
-      
-      img.onerror = () => {
-        carouselItem.innerHTML = `
-          <div class="placeholder-content">
-            <span class="placeholder-icon">❌</span>
-            <p>Could not load:<br><code>${item.name}</code></p>
-          </div>
-        `;
-      };
-      
-      carouselItem.appendChild(img);
-    } else if (item.type === 'video') {
-      const video = document.createElement('video');
-      video.src = item.path;
-      video.controls = true;
-      video.preload = 'metadata';
-      video.style.maxWidth = '100%';
-      video.style.maxHeight = '100%';
-      
-      video.onerror = () => {
-        carouselItem.innerHTML = `
-          <div class="placeholder-content">
-            <span class="placeholder-icon">❌</span>
-            <p>Could not load:<br><code>${item.name}</code></p>
-          </div>
-        `;
-      };
-      
-      carouselItem.appendChild(video);
-    }
-    
-    this.track.appendChild(carouselItem);
-  }
-  
-  createDot(index) {
-    const dot = document.createElement('div');
-    dot.className = 'carousel-dot';
-    if (index === 0) dot.classList.add('active');
-    
-    dot.addEventListener('click', () => {
-      this.goToSlide(index);
-    });
-    
-    this.dotsContainer.appendChild(dot);
-  }
-  
-  updateCarousel(animate = true) {
-    const hasMultipleItems = this.mediaItems.length > 1 && this.mediaItems[0].type !== 'placeholder';
-    
-    if (hasMultipleItems) {
-      // Infinite scrolling mode
-      const translateX = -this.actualIndex * 100;
-      
-      if (animate) {
-        this.track.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-      } else {
-        this.track.style.transition = 'none';
-      }
-      
-      this.track.style.transform = `translateX(${translateX}%)`;
-      
-      // Handle infinite loop transitions
-      if (animate) {
-        setTimeout(() => {
-          if (this.actualIndex === 0) {
-            // Jumped from last to first clone, move to real last item
-            this.actualIndex = this.mediaItems.length;
-            this.track.style.transition = 'none';
-            this.track.style.transform = `translateX(-${this.actualIndex * 100}%)`;
-          } else if (this.actualIndex === this.mediaItems.length + 1) {
-            // Jumped from first to last clone, move to real first item
-            this.actualIndex = 1;
-            this.track.style.transition = 'none';
-            this.track.style.transform = `translateX(-${this.actualIndex * 100}%)`;
-          }
-        }, 600); // Match transition duration
-      }
-    } else {
-      // Single item or placeholder mode
-      this.track.style.transition = animate ? 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
-      this.track.style.transform = `translateX(-${this.currentIndex * 100}%)`;
-    }
-    
-    // Update dots
-    const dots = this.dotsContainer.querySelectorAll('.carousel-dot');
-    dots.forEach((dot, index) => {
-      if (index === this.currentIndex) {
-        dot.classList.add('active');
-      } else {
-        dot.classList.remove('active');
-      }
-    });
-    
-    // Pause all videos except the current one
-    const videos = this.track.querySelectorAll('video');
-    videos.forEach((video, index) => {
-      const videoIndex = hasMultipleItems ? index - 1 : index; // Account for clone
-      if (videoIndex !== this.currentIndex) {
-        video.pause();
-      }
-    });
-  }
-  
-  nextSlide() {
-    // Don't allow navigation if only one item or if it's a placeholder
-    if (this.mediaItems.length <= 1 || this.mediaItems[0].type === 'placeholder') return;
-    
-    const hasMultipleItems = this.mediaItems.length > 1;
-    
-    if (hasMultipleItems) {
-      // Infinite scrolling mode
-      this.currentIndex = (this.currentIndex + 1) % this.mediaItems.length;
-      this.actualIndex++;
-      
-      if (this.actualIndex > this.mediaItems.length) {
-        this.actualIndex = this.mediaItems.length + 1; // Go to last clone
-      }
-    }
-    
-    this.updateCarousel();
-  }
-  
-  prevSlide() {
-    // Don't allow navigation if only one item or if it's a placeholder
-    if (this.mediaItems.length <= 1 || this.mediaItems[0].type === 'placeholder') return;
-    
-    const hasMultipleItems = this.mediaItems.length > 1;
-    
-    if (hasMultipleItems) {
-      // Infinite scrolling mode
-      this.currentIndex = this.currentIndex === 0 ? 
-        this.mediaItems.length - 1 : this.currentIndex - 1;
-      this.actualIndex--;
-      
-      if (this.actualIndex < 1) {
-        this.actualIndex = 0; // Go to first clone
-      }
-    }
-    
-    this.updateCarousel();
-  }
-  
-  goToSlide(index) {
-    // Don't allow navigation if only one item or if it's a placeholder
-    if (index < 0 || index >= this.mediaItems.length || this.mediaItems.length <= 1 || this.mediaItems[0].type === 'placeholder') return;
-    
-    const hasMultipleItems = this.mediaItems.length > 1;
-    
-    this.currentIndex = index;
-    
-    if (hasMultipleItems) {
-      this.actualIndex = index + 1; // Account for first clone
-    }
-    
-    this.updateCarousel();
-  }
-  
-  updateNavigationVisibility() {
-    const prevBtn = document.querySelector('.carousel-btn-prev');
-    const nextBtn = document.querySelector('.carousel-btn-next');
-    const dotsContainer = this.dotsContainer;
-    
-    // Hide navigation if only one item or placeholder
-    const shouldHideNavigation = this.mediaItems.length <= 1 || this.mediaItems[0].type === 'placeholder';
-    
-    if (prevBtn) prevBtn.style.display = shouldHideNavigation ? 'none' : 'flex';
-    if (nextBtn) nextBtn.style.display = shouldHideNavigation ? 'none' : 'flex';
-    if (dotsContainer) dotsContainer.style.display = shouldHideNavigation ? 'none' : 'flex';
-  }
-  
-  setupEventListeners() {
-    // Touch events for mobile swiping
-    const wrapper = document.querySelector('.carousel-wrapper');
-    
-    wrapper.addEventListener('touchstart', (e) => {
-      this.touchStartX = e.changedTouches[0].screenX;
-    });
-    
-    wrapper.addEventListener('touchend', (e) => {
-      this.touchEndX = e.changedTouches[0].screenX;
-      this.handleSwipe();
-    });
-    
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        this.prevSlide();
-      } else if (e.key === 'ArrowRight') {
-        this.nextSlide();
-      }
-    });
-  }
-  
-  handleSwipe() {
-    // Don't handle swipes if only one item or placeholder
-    if (this.mediaItems.length <= 1 || this.mediaItems[0].type === 'placeholder') return;
-    
-    const swipeThreshold = 50;
-    const diff = this.touchStartX - this.touchEndX;
-    
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
-        this.nextSlide(); // Swipe left, go to next
-      } else {
-        this.prevSlide(); // Swipe right, go to previous
-      }
-    }
-  }
-}
 
-// Global functions for button clicks
-function nextSlide() {
-  if (window.carousel) {
-    window.carousel.nextSlide();
-  }
-}
-
-function prevSlide() {
-  if (window.carousel) {
-    window.carousel.prevSlide();
-  }
-}
-
-// Initialize carousel when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  window.carousel = new FavouriteCarousel();
-});
+  loadMedia().then(()=>{
+    requestAnimationFrame(step);
+  });
+})();

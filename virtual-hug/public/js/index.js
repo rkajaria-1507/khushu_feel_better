@@ -19,7 +19,7 @@ function updateLoveTimer() {
   let hours = Math.floor(totalSeconds / 3600);
   totalSeconds -= hours * 3600;
   let minutes = Math.floor(totalSeconds / 60);
-  let seconds = totalSeconds - minutes * 60;
+  let seconds = Math.floor(totalSeconds - minutes * 60); // ensure whole number seconds
 
   const timerText = `${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
   const timerEl = document.getElementById('love-timer');
@@ -77,14 +77,14 @@ function showBouquetPopup() {
 function bouquetLoop(first = false) {
   if (first) {
     // Delay first popup by 2-10 min
-    const firstDelay = Math.floor(Math.random() * 480000) + 120000; // 2-10 min
+    const firstDelay = Math.floor(Math.random() * 30000) + 30000; 
     setTimeout(() => {
       showBouquetPopup();
       bouquetLoop();
     }, firstDelay);
   } else {
     showBouquetPopup();
-    const nextDelay = Math.floor(Math.random() * 600000); // 0-10 min in ms
+    const nextDelay = Math.floor(Math.random() * 120000); 
     setTimeout(bouquetLoop, nextDelay);
   }
 }
@@ -100,10 +100,10 @@ function toggleMusic() {
   if (!music || !btn) return;
   if (music.paused) {
     music.play();
-    btn.textContent = 'Pause Music ⏸';
+    btn.textContent = 'Pause ⏸';
   } else {
     music.pause();
-    btn.textContent = 'Play Music 🎵';
+    btn.textContent = 'Play 🎵';
   }
 }
 
@@ -112,5 +112,5 @@ document.getElementById('music-select').addEventListener('change', function() {
   const btn = document.querySelector('.music-btn');
   music.src = this.value;
   music.load();
-  btn.textContent = 'Play Music 🎵';
+  btn.textContent = 'Play 🎵';
 });

@@ -20,7 +20,7 @@
     <!-- Music Controls -->
     <div class="theme-music-bar">
       <audio id="bg-music" src="audio/love-song.mp3" loop></audio>
-      <button class="music-btn" onclick="toggleMusic()">Play Music 🎵</button>
+      <button class="music-btn" onclick="toggleMusic()">Play🎵</button>
     </div>
 
     <!-- Love Timeline Box -->
@@ -32,7 +32,7 @@
     <div class="links">
       <a href="pages/hug.html" class="card">Virtual Hug 🤗</a>
       <a href="pages/messages.html" class="card">Love Messages 💌</a>
-      <div class="card encouragement-btn" onclick="showDailyEncouragement()">Motivation 🌟</div>
+      <div class="card encouragement-btn" onclick="showDailyEncouragement()">Why I Love You 💖</div>
       <!-- <a href="pages/activities.html" class="card">Date Ideas 💕</a> -->
       <a href="pages/flowers.html" class="card">Flowers for you 🌸</a>
     </div>
@@ -41,21 +41,12 @@
     <div class="carousel-section">
       <h2 class="carousel-title">Our Favourite Moments 💫</h2>
       <div class="carousel-container">
-        <button class="carousel-btn carousel-btn-prev" onclick="prevSlide()">‹</button>
         <div class="carousel-wrapper">
           <div class="carousel-track" id="carousel-track">
-            <!-- Media items will be loaded dynamically -->
-            <div class="carousel-item placeholder-item">
-              <div class="placeholder-content">
-                <span class="placeholder-icon">📷</span>
-                <p>Add your favourite moments to<br><code>images/carousel/</code></p>
-              </div>
-            </div>
+            <!-- Items injected dynamically -->
           </div>
         </div>
-        <button class="carousel-btn carousel-btn-next" onclick="nextSlide()">›</button>
       </div>
-      <div class="carousel-dots" id="carousel-dots"></div>
     </div>
   </div>
   

@@ -18,6 +18,12 @@
       <!-- Envelopes will be dynamically generated here -->
     </div>
   </div>
+  <script src="../js/loading.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof wrapLinkTransitions === 'function') wrapLinkTransitions();
+    });
+  </script>
   <script src="../js/messages.js"></script>
   <script src="../js/hearts.js"></script>
 </body>

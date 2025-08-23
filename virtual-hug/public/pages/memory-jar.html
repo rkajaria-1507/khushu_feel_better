@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Jar</title>
+  <link rel="stylesheet" href="../css/common.css" />
+  <link rel="stylesheet" href="../css/memory-jar.css" />
+</head>
+<body>
+  <div class="container">
+    <a href="../index.html" class="back-link">&larr; Back</a>
+    <h2>Memory Jar ✨</h2>
+    <div class="subtitle">Add little memories to revisit anytime</div>
+
+    <form id="memory-form" class="memory-form">
+      <input id="memory-text" type="text" maxlength="160" placeholder="Write a sweet memory (max 160 chars)" required />
+      <button type="submit" class="card">Add</button>
+    </form>
+
+    <ul id="memories" class="memories-list"></ul>
+  </div>
+
+  <script src="../js/memory-jar.js"></script>
+</body>
+</html>

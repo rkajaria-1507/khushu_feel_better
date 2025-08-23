@@ -20,6 +20,12 @@
       <li>Keep going, you’ve got this!</li>
     </ul>
   </div>
+  <script src="../js/loading.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof wrapLinkTransitions === 'function') wrapLinkTransitions();
+    });
+  </script>
   <script src="../js/hearts.js"></script>
 </body>
 </html>

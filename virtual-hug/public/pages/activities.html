@@ -179,6 +179,12 @@
       </div>
     </div>
   </div>
+  <script src="../js/loading.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof wrapLinkTransitions === 'function') wrapLinkTransitions();
+    });
+  </script>
   <script src="../js/hearts.js"></script>
   <script src="../js/dates.js"></script>
 </body>
