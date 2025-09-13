@@ -1,0 +1,326 @@
+/* carousel.css - Beautiful photo and video carousel for favourite moments */
+
+.carousel-section {
+  margin-top: 60px;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, 
+    rgba(255, 182, 193, 0.1), 
+    rgba(255, 105, 180, 0.1),
+    rgba(255, 20, 147, 0.1));
+  border-radius: 25px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 182, 193, 0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.carousel-title {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #d63384;
+  margin-bottom: 40px;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(214, 51, 132, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+.carousel-container {
+  position: relative;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 2;
+  padding: 1px;
+  box-sizing: border-box;
+}
+
+.carousel-wrapper {
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(214, 51, 132, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  position: relative;
+  background: #fff5f7;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-track {
+  display: flex;
+  will-change: transform;
+  width: auto;
+  transition: none;
+}
+
+/* Media item wrapper – stripped down so images/videos sit directly one after another */
+.carousel-item {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Remove card look */
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0 6px; /* small gap between media; adjust if you want them touching */
+  width: auto;
+  height: auto;
+  min-width: 0;
+}
+
+/* Clone items for infinite scrolling */
+.carousel-item.clone {
+  pointer-events: none; /* Prevent interaction with clone items */
+}
+
+/* Raw media styling (slight rounding optional) */
+.carousel-item img,
+.carousel-item video {
+  height: auto; /* keep original proportions */
+  width: auto;
+  max-height: 360px; /* desktop cap */
+  object-fit: fill; /* no cropping, letterbox if needed */
+  display: block;
+  border-radius: 8px; /* keep a tiny soft edge; set to 0 for perfectly square */
+  box-shadow: none; /* remove drop shadow */
+  margin: 0;
+  transition: transform 0.3s ease;
+  background: #000; /* ensure visible area for videos before first frame */
+}
+
+/* Keep video visible while metadata loads */
+.carousel-item video { min-width: 120px; }
+
+/* Optional subtle hover (disabled); uncomment if wanted */
+/* .carousel-item:hover img, .carousel-item:hover video { transform: scale(1.02); } */
+
+/* Video controls styling */
+.carousel-item video::-webkit-media-controls-panel {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+}
+
+/* Placeholder for when no media is added yet */
+.placeholder-item {
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.2), rgba(255, 105, 180, 0.2));
+  flex-direction: column;
+  text-align: center;
+  border: 2px dashed rgba(214, 51, 132, 0.3);
+}
+
+.placeholder-content {
+  color: #8b5a6b;
+}
+
+.placeholder-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  display: block;
+  opacity: 0.7;
+}
+
+.placeholder-content p {
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.placeholder-content code {
+  background: rgba(214, 51, 132, 0.1);
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-family: 'Monaco', 'Consolas', monospace;
+  color: #d63384;
+}
+
+/* Navigation buttons */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 182, 193, 0.8));
+  border: 2px solid rgba(214, 51, 132, 0.2);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  color: #d63384;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 8px 25px rgba(214, 51, 132, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-btn:hover {
+  background: linear-gradient(145deg, #d63384, #b02a5b);
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 
+    0 12px 35px rgba(214, 51, 132, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.carousel-btn-prev {
+  left: -25px;
+}
+
+.carousel-btn-next {
+  right: -25px;
+}
+
+/* Dots indicator */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.carousel-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(214, 51, 132, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.carousel-dot::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.carousel-dot:hover {
+  background: rgba(214, 51, 132, 0.6);
+  transform: scale(1.2);
+}
+
+.carousel-dot.active {
+  background: linear-gradient(145deg, #d63384, #b02a5b);
+  transform: scale(1.3);
+  box-shadow: 0 0 15px rgba(214, 51, 132, 0.5);
+}
+
+.carousel-dot.active::before {
+  border-color: rgba(214, 51, 132, 0.3);
+}
+
+/* Media item overlay for better interaction */
+.carousel-item {
+  position: relative;
+}
+
+/* Remove decorative hover overlay since cards are gone */
+.carousel-item::after { display: none; }
+
+/* Loading state */
+.carousel-item.loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .carousel-container {
+    max-width: 98vw;
+    padding: 0 8px;
+  }
+  .carousel-item img,
+  .carousel-item video { max-height: 300px; }
+}
+
+@media (max-width: 768px) {
+  .carousel-container {
+    max-width: 100vw;
+    padding: 0 4px;
+  }
+  .carousel-item img,
+  .carousel-item video { max-height: 220px; }
+}
+
+/* Touch gestures support */
+.carousel-wrapper.dragging {
+  cursor: grabbing;
+}
+
+.carousel-wrapper.dragging .carousel-track {
+  transition: none;
+}
+
+/* Smooth entry animation */
+.carousel-section {
+  animation: slideInUp 0.8s ease-out;
+}
+
+@keyframes slideInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Remove arrows/dots visually if legacy markup lingers */
+.carousel-btn, .carousel-dots {
+  display: none !important;
+}
+
+/* Expanded video style */
+.carousel-item.expanded {
+  height: 400px;
+  justify-content: center;
+  z-index: 5; /* sit above neighbors */
+}
+
+.carousel-item.expanded video {
+  height: auto;
+  max-height: 480px;
+}

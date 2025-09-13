@@ -1,0 +1,129 @@
+/* encouragement.css - Daily encouragement overlay system */
+
+.encouragement-btn {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.encouragement-btn:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(255, 105, 180, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+}
+
+.encouragement-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, 
+    rgba(255, 182, 193, 0.95), 
+    rgba(255, 105, 180, 0.95),
+    rgba(255, 20, 147, 0.95));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  transition: all 0.5s ease;
+}
+
+.encouragement-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.9);
+}
+
+.encouragement-content {
+  text-align: center;
+  max-width: 80%;
+  position: relative;
+  z-index: 1001;
+}
+
+.encouragement-message {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(255, 255, 255, 0.5);
+  line-height: 1.2;
+  margin-bottom: 40px;
+  animation: message-appear 0.8s ease-out;
+  font-family: 'Poppins', sans-serif;
+}
+
+@keyframes message-appear {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.close-btn, .new-message-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 10px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.close-btn:hover, .new-message-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+}
+
+.new-message-btn {
+  background: linear-gradient(145deg, rgba(255, 215, 0, 0.8), rgba(255, 165, 0, 0.8));
+  border-color: rgba(255, 215, 0, 0.6);
+}
+
+.new-message-btn:hover {
+  background: linear-gradient(145deg, rgba(255, 215, 0, 0.9), rgba(255, 165, 0, 0.9));
+  border-color: rgba(255, 215, 0, 0.8);
+}
+
+/* Enhanced hearts when encouragement is active */
+.encouragement-active .heart {
+  animation-duration: 3s !important;
+  opacity: 0.9 !important;
+  font-size: 25px !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .encouragement-message {
+    font-size: 2.5rem;
+  }
+  
+  .close-btn, .new-message-btn {
+    font-size: 16px;
+    padding: 12px 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .encouragement-message {
+    font-size: 2rem;
+  }
+  
+  .encouragement-content {
+    max-width: 95%;
+  }
+}

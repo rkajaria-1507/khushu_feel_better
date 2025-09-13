@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Care Package</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/hearts.css">
+  <link rel="stylesheet" href="css/flowers.css">
+  <link rel="stylesheet" href="css/encouragement.css">
+  <link rel="stylesheet" href="css/carousel.css">
+  <link rel="stylesheet" href="css/loading.css">
+  <link rel="stylesheet" href="css/lock.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Virtual Care Package 💖</h1>
+
+    <!-- Video Link (opens separate page that plays the MP4) and background music control -->
+    <div class="theme-music-bar">
+      <audio id="bg-music" src="audio/love-song.mp3" loop></audio>
+      <button id="music-toggle-btn" class="music-btn" onclick="toggleMusic()">Play 🎵</button>
+      <a class="music-btn" href="pages/video.html">Play Video ▶</a>
+    </div>
+
+    <!-- Love Timeline Box -->
+    <div class="love-timeline">
+      <h2>Our Love Timeline 💞</h2>
+      <div class="love-timer" id="love-timer">Loading...</div>
+    </div>
+
+    <div class="links">
+      <a href="pages/hug.html" class="card">Virtual Hug 🤗</a>
+      <a href="pages/messages.html" class="card">Love Messages 💌</a>
+      <div class="card encouragement-btn" onclick="showDailyEncouragement()">Why I Love You 💖</div>
+      <!-- <a href="pages/activities.html" class="card">Date Ideas 💕</a> -->
+      <a href="pages/flowers.html" class="card">Flowers for you 🌸</a>
+    </div>
+    
+    <!-- Favourite Moments Carousel -->
+    <div class="carousel-section">
+      <h2 class="carousel-title">Our Favourite Moments 💫</h2>
+      <div class="carousel-container">
+        <div class="carousel-wrapper">
+          <div class="carousel-track" id="carousel-track">
+            <!-- Items injected dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Daily Encouragement Overlay (outside container so it doesn't fade) -->
+  <div id="encouragement-overlay" class="encouragement-overlay hidden">
+    <div class="encouragement-content">
+      <div id="encouragement-message" class="encouragement-message"></div>
+      <button class="close-btn" onclick="closeDailyEncouragement()">× Close</button>
+      <button class="new-message-btn" onclick="showNewMessage()">New Message ✨</button>
+    </div>
+  </div>
+  
+  <!-- Flowers container (hidden by default, shown during encouragement) -->
+  <div class="flowers-container"></div>
+  
+  <script src="js/index.js"></script>
+  <script src="js/hearts.js"></script>
+  <script src="js/encouragement.js"></script>
+  <script src="js/carousel.js"></script>
+  <script src="js/lock.js"></script>
+</body>
+</html>

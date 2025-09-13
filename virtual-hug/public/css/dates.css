@@ -1,0 +1,252 @@
+/* dates.css - Beautiful long distance date ideas page */
+
+.dates-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.dates-header h2 {
+  font-size: 2.5rem;
+  color: #d63384;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(214, 51, 132, 0.2);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #8b5a6b;
+  font-weight: 400;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Category Tabs */
+.date-categories {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.category {
+  background: linear-gradient(145deg, #fff0f5, #ffe6e6);
+  border: 2px solid rgba(214, 51, 132, 0.2);
+  border-radius: 25px;
+  padding: 12px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #8b5a6b;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(214, 51, 132, 0.1);
+}
+
+.category:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(214, 51, 132, 0.2);
+  border-color: rgba(214, 51, 132, 0.4);
+}
+
+.category.active {
+  background: linear-gradient(145deg, #d63384, #b02a5b);
+  color: white;
+  border-color: #d63384;
+  box-shadow: 0 8px 25px rgba(214, 51, 132, 0.4);
+}
+
+.category-icon {
+  font-size: 1.2rem;
+}
+
+/* Date Ideas Container */
+.date-ideas-container {
+  position: relative;
+  min-height: 600px;
+}
+
+.date-ideas-section {
+  display: none;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.date-ideas-section.active {
+  display: block;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Individual Date Ideas */
+.date-idea {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  background: linear-gradient(145deg, #ffffff, #fff5f7);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 
+    0 10px 30px rgba(214, 51, 132, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(214, 51, 132, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.date-idea::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ff69b4, #ff1493, #d63384);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.date-idea:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 20px 40px rgba(214, 51, 132, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.date-idea:hover::before {
+  opacity: 1;
+}
+
+.date-icon {
+  font-size: 3rem;
+  min-width: 70px;
+  text-align: center;
+  background: linear-gradient(145deg, #ffe6e6, #ffb6c1);
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 8px 20px rgba(214, 51, 132, 0.15),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.date-content h3 {
+  margin: 0 0 10px 0;
+  color: #d63384;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.date-content p {
+  margin: 0;
+  color: #6c757d;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* Floating decorative elements */
+.date-ideas-container::before {
+  content: '💕';
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  font-size: 2rem;
+  opacity: 0.3;
+  animation: float-decoration 6s ease-in-out infinite;
+}
+
+.date-ideas-container::after {
+  content: '✨';
+  position: absolute;
+  bottom: 15%;
+  left: 3%;
+  font-size: 1.5rem;
+  opacity: 0.4;
+  animation: float-decoration 8s ease-in-out infinite reverse;
+}
+
+@keyframes float-decoration {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+/* Add some sparkle effects */
+.date-idea:nth-child(2n)::after {
+  content: '💫';
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 1.2rem;
+  opacity: 0.6;
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dates-header h2 {
+    font-size: 2rem;
+  }
+  
+  .date-categories {
+    gap: 10px;
+  }
+  
+  .category {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .date-idea {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .date-icon {
+    align-self: center;
+  }
+  
+  .date-content h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dates-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .date-idea {
+    padding: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .date-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+  }
+}

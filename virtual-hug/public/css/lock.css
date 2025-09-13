@@ -1,0 +1,231 @@
+/* lock.css - Bank style vault single dial */
+.vault-lock-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 999999;
+	background: radial-gradient(circle at 35% 30%, #22252a, #0b0c0e);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 40px;
+	color: #fff;
+	font-family: "Poppins", sans-serif;
+	letter-spacing: .5px;
+	overflow: hidden
+}
+
+.vault-door {
+	position: relative;
+	width: min(480px, 92vw);
+	padding: 52px 44px 60px;
+	background: linear-gradient(145deg, #3b3f46, #16181b);
+	border: 4px solid #5d6065;
+	border-radius: 34px;
+	box-shadow: 0 0 0 4px #0a0b0c, 0 14px 44px -10px rgba(0, 0, 0, .65), inset 0 10px 26px -10px rgba(255, 255, 255, .12), inset 0 -10px 26px -10px rgba(0, 0, 0, .65);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 30px
+}
+
+.vault-title {
+	font-size: 1.9rem;
+	font-weight: 600;
+	background: linear-gradient(90deg, #fffffe, #c6d4ff);
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	letter-spacing: 1px;
+	text-align: center
+}
+
+.vault-sub {
+	font-size: .95rem;
+	opacity: .75;
+	text-align: center;
+	max-width: 420px;
+	line-height: 1.4
+}
+
+.vault-countdown {
+	font: 600 1.35rem "Poppins", sans-serif;
+	letter-spacing: 1px;
+	background: linear-gradient(90deg, #ff9ad6, #ffd39a);
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	text-align: center
+}
+
+.vault-help {
+	font-size: .68rem;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	opacity: .42;
+	margin-top: -4px
+}
+
+.vault-combo-wrapper {
+	position: relative;
+	width: 240px;
+	height: 240px;
+	display: flex;
+	align-items: center;
+	justify-content: center
+}
+
+.vault-combo-dial {
+	--size: 240px;
+	width: var(--size);
+	height: var(--size);
+	border-radius: 50%;
+	position: relative;
+	background: radial-gradient(circle at 30% 30%, #6c7076, #1a1d20);
+	box-shadow: inset 0 10px 24px -12px rgba(255, 255, 255, .25), inset 0 -12px 26px -10px rgba(0, 0, 0, .85), 0 0 0 6px #0e1012, 0 0 0 10px #52555a, 0 28px 60px -22px rgba(0, 0, 0, .9);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: dialIdle 6s ease-in-out infinite
+}
+
+.vault-combo-dial::before {
+	content: "";
+	position: absolute;
+	inset: 18px;
+	border-radius: 50%;
+	background: repeating-conic-gradient(from 0deg, #2c2f34 0 6deg, #34373c 6deg 12deg);
+	mask: radial-gradient(circle at 50% 50%, transparent 0 57%, #000 58% 100%);
+	opacity: .55
+}
+
+.vault-combo-dial::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: 50%;
+	background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, .28), rgba(255, 255, 255, 0) 55%)
+}
+
+.dial-pointer {
+	position: absolute;
+	top: -14px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 18px solid #ffb3d6;
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .6))
+}
+
+.dial-center-cap {
+	position: absolute;
+	width: 72px;
+	height: 72px;
+	border-radius: 50%;
+	background: radial-gradient(circle at 35% 35%, #fafbff, #9ba3b0);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, .6), inset 0 4px 10px -4px rgba(255, 255, 255, .9), inset 0 -6px 14px -6px rgba(0, 0, 0, .7);
+	z-index: 2
+}
+
+.dial-numbers {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: .85rem;
+	font-weight: 500;
+	color: rgba(255, 255, 255, .7);
+	letter-spacing: 2px;
+}
+
+@keyframes dialIdle {
+
+	0%,
+	100% {
+		transform: rotate(0deg)
+	}
+
+	50% {
+		transform: rotate(8deg)
+	}
+}
+
+/* Spin sequence: clockwise 2 turns, counter 2 turns, clockwise 1 turn */
+@keyframes comboSpinSequence {
+	0% {
+		transform: rotate(0deg)
+	}
+
+	33% {
+		transform: rotate(720deg)
+	}
+
+	66% {
+		transform: rotate(-720deg)
+	}
+
+	100% {
+		transform: rotate(-360deg)
+	}
+}
+
+.vault-lock-overlay.spinning .vault-combo-dial {
+	animation: comboSpinSequence 2.8s cubic-bezier(.65, .02, .22, .99) forwards
+}
+
+/* Door opening after spin */
+.vault-lock-overlay.unlocking .vault-door {
+	animation: vaultDoorOpen 1.15s cubic-bezier(.65, .02, .22, .99) forwards
+}
+
+@keyframes vaultDoorOpen {
+	0% {
+		transform: scale(1) rotate(0deg);
+		opacity: 1;
+		filter: brightness(1)
+	}
+
+	55% {
+		transform: scale(.92) rotate(-3deg);
+		filter: brightness(1.2)
+	}
+
+	72% {
+		transform: scale(1.06) rotate(2deg);
+		filter: brightness(1.25)
+	}
+
+	100% {
+		transform: scale(.12) rotate(360deg);
+		opacity: 0;
+		filter: brightness(2)
+	}
+}
+
+/* Responsive */
+@media (max-width:620px) {
+	.vault-door {
+		padding: 44px 30px 54px
+	}
+
+	.vault-title {
+		font-size: 1.55rem
+	}
+
+	.vault-countdown {
+		font-size: 1.05rem
+	}
+
+	.vault-combo-wrapper {
+		width: 200px;
+		height: 200px
+	}
+
+	.vault-combo-dial {
+		--size: 200px
+	}
+}
