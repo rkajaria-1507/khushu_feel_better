@@ -18,10 +18,10 @@
   <div class="container">
     <h1>Virtual Care Package 💖</h1>
 
-    <!-- Video Link (opens separate page that plays the MP4) and background music control -->
+    <!-- Theme music + video navigation -->
     <div class="theme-music-bar">
-      <audio id="bg-music" src="audio/love-song.mp3" loop></audio>
-      <button id="music-toggle-btn" class="music-btn" onclick="toggleMusic()">Play 🎵</button>
+      <!-- Floating iframe injected on demand -->
+      <button id="music-toggle-btn" class="music-btn">Play 🎵</button>
       <a class="music-btn" href="pages/video.html">Play Video ▶</a>
     </div>
 
@@ -64,6 +64,41 @@
   <!-- Flowers container (hidden by default, shown during encouragement) -->
   <div class="flowers-container"></div>
   
+  <script>
+    // Lightweight background YouTube music controller
+    (function(){
+      const YT_BG_URL = 'https://www.youtube.com/embed/DI15USCy_gw?autoplay=1&loop=1&playlist=DI15USCy_gw';
+      const btn = document.getElementById('music-toggle-btn');
+      let iframe = null;
+      let playing = false;
+      function createPlayer(){
+        iframe = document.createElement('iframe');
+        iframe.src = YT_BG_URL;
+        iframe.width = 0; // hidden but audible
+        iframe.height = 0;
+        iframe.allow = 'autoplay; encrypted-media';
+        iframe.style.position = 'absolute';
+        iframe.style.left = '-9999px';
+        iframe.setAttribute('title','Background music');
+        document.body.appendChild(iframe);
+      }
+      btn.addEventListener('click', ()=>{
+        if(!playing){
+          if(!iframe) createPlayer();
+          playing = true;
+          btn.textContent = 'Pause 🎵';
+          // Stopping requires replacing src (since we used a hidden simple embed)
+        } else {
+          if(iframe){
+            iframe.parentNode.removeChild(iframe);
+            iframe = null;
+          }
+          playing = false;
+          btn.textContent = 'Play 🎵';
+        }
+      });
+    })();
+  </script>
   <script src="js/index.js"></script>
   <script src="js/hearts.js"></script>
   <script src="js/encouragement.js"></script>
